@@ -221,6 +221,11 @@ class MySQLtoSQLite(MySQLtoSQLiteAttributes):
 
         data_type: str = match.group(0).upper()
 
+        if data_type in {
+            "TINYINT",
+        }:
+            return "TINYSINT"
+
         if data_type.endswith(" UNSIGNED"):
             data_type = data_type.replace(" UNSIGNED", "")
 
