@@ -213,6 +213,8 @@ class MySQLtoSQLite(MySQLtoSQLiteAttributes):
         cls, column_type: t.Union[str, bytes], sqlite_json1_extension_enabled=False
     ) -> str:
         _column_type: str = cls._decode_column_type(column_type)
+        # clean up for mariadb types. ex: change `tinyint(3) unsigned` to `tinyint unsigned`
+        _column_type = re.sub(r'^(\w+)(\(\d+\)\s)', r'\1 ', _column_type)
 
         # This could be optimized even further, however is seems adequate.
         match: t.Optional[t.Match[str]] = cls._valid_column_type(_column_type)
